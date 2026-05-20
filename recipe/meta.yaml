@@ -11,7 +11,7 @@ source:
 
 build:
   script: {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
-  number: 1
+  number: 2
   script_env:
     # Don't build metatomic-torch, but use the already compiled `libmetatomic-torch`
     # package
@@ -38,17 +38,17 @@ requirements:
     - pip
     - setuptools >=77
     - packaging >=23
-    # We build against the CPU version of torch to not have to deal with CUDA compilers
-    # (torch's CMake targets tries to find CUDA compilers even when there is no CUDA
-    # code to build). This does not impact the `run` dependency, since torch's
-    # `run_exports` are variant agnostic
+    # We build against the CPU version of torch to not have to deal with CUDA
+    # compilers (torch's CMake targets tries to find CUDA compilers even when
+    # there is no CUDA code to build). This does not impact the `run`
+    # dependency, since torch's `run_exports` are variant agnostic
     - libtorch * cpu*
-    - libmetatomic-torch {{ version }}
+    - libmetatomic-torch >={{ version }},<0.2
     - python-metatensor-torch >=0.8.0,<0.9   # [build_platform == target_platform]
   run:
     - python
     - pytorch
-    - libmetatomic-torch {{ version }}
+    - libmetatomic-torch >={{ version }},<0.2
     - python-metatensor-torch >=0.8.0,<0.9
     - python-metatensor-operations >=0.4.0,<0.5
     - python-vesin
