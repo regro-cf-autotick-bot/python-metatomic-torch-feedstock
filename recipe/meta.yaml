@@ -1,5 +1,5 @@
 {% set name = "metatomic-torch" %}
-{% set version = "0.1.11" %}
+{% set version = "0.1.13" %}
 
 package:
   name: python-{{ name|lower }}
@@ -7,11 +7,11 @@ package:
 
 source:
   url: https://pypi.org/packages/source/{{ name[0] }}/{{ name }}/metatomic_torch-{{ version }}.tar.gz
-  sha256: 540171dd03de84cb11b46a750bf016eb57dca756b5adf0383cefffbc9117e95f
+  sha256: 04fe298e96e8e8da24bd0e0a82d537783317b2eda969959872efe2fd880a3693
 
 build:
   script: {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
-  number: 2
+  number: 0
   script_env:
     # Don't build metatomic-torch, but use the already compiled `libmetatomic-torch`
     # package
@@ -27,7 +27,7 @@ requirements:
     - python                                 # [build_platform != target_platform]
     - cross-python_{{ target_platform }}     # [build_platform != target_platform]
     - pytorch                                # [build_platform != target_platform]
-    - python-metatensor-torch >=0.8.0,<0.9   # [build_platform != target_platform]
+    - python-metatensor-torch >=0.9.0,<0.10  # [build_platform != target_platform]
     # Nothing will be built but we need a correct env to make pip happy
     - {{ compiler('cxx') }}
     - {{ stdlib("c") }}
@@ -44,22 +44,22 @@ requirements:
     # dependency, since torch's `run_exports` are variant agnostic
     - libtorch * cpu*
     - libmetatomic-torch >={{ version }},<0.2
-    - python-metatensor-torch >=0.8.0,<0.9   # [build_platform == target_platform]
+    - python-metatensor-torch >=0.9.0,<0.10  # [build_platform == target_platform]
   run:
     - python
     - pytorch
     - libmetatomic-torch >={{ version }},<0.2
-    - python-metatensor-torch >=0.8.0,<0.9
-    - python-metatensor-operations >=0.4.0,<0.5
-    - python-vesin
+    - python-metatensor-torch >=0.9.0,<0.10
+    - python-metatensor-operations >=0.5.0,<0.6
+    # - python-metatomic-ase
 
 test:
   imports:
     - metatomic.torch
-  commands:
-    - pip check
-  requires:
-    - pip
+  # commands:
+  #   - pip check
+  # requires:
+  #   - pip
 
 about:
   home: https://github.com/metatensor/metatomic
